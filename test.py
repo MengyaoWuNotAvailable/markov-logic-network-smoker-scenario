@@ -94,14 +94,14 @@ def learn_with_config(database,mln):
     config['incremental'] = 0   #0
     config['grammar'] = 'StandardGrammar'
     config['logic'] = 'FirstOrderLogic'
-    config['method'] = 'BPLL'    # BPLL
+    config['method'] = 'BPLL_CG'    # BPLL, CLL (composite log..), BPLL_CG (fast conjunction)
     config['multicore'] = True
     config['profile'] = 0
     config['shuffle'] = 0
     config['prior_mean'] = 0
     config['prior_stdev'] = 5   # 5
     config['save'] = True
-    config['use_initial_weights'] = 0
+    config['use_initial_weights'] = True
     config['use_prior'] = 0
     #config['output_filename'] = 'learnt.dbpll_cg.student-new-train-student-new-2.mln'
     # 亲测无效, 此句没法储存.mln 档案
@@ -152,7 +152,7 @@ for f in mln.formulas:
     print(f)
     f.print_structure()
     
-    
+#mln = MLN(mlnfile='learnt.mln',grammar='StandardGrammar', logic='FirstOrderLogic')   
     
 
 db_train = write_db('data.txt')
@@ -161,7 +161,8 @@ db_train.write()
     
 learnt_mln = learn_with_config(db_train,mln)
 #learnt_mln = mln.learn([db_train])
-learnt_mln.write()
+learnt_mln.tofile(os.getcwd() + '/' + 'learnt.mln')
+#learnt_mln.write()
 
 
 db_test = write_db('data_test.txt')
