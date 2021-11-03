@@ -1,2 +1,6 @@
-Smokes(x) => Cancer(x)
-Friends(x,y) => (Smokes(x) <=> Smokes(y))
+Free(x) <=> Safe(x)
+(Free(y)^Front(x,y)) => Safe(x)
+!Free(x) => !Safe(x).
+(!Free(y)^Front(x,y)) => !Safe(x)
+(Front(x,y)^Speedhigh(y)) => Safe(x)
+(Front(x,y)^!Speedhigh(y)) => !Safe(x)

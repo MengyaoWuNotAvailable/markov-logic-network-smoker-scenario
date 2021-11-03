@@ -1,3 +1,4 @@
-Cancer(person)
-Friends(person,person)
-Smokes(person)
+Free(p)
+Front(p,p)
+Safe(p)
+Speedhigh(p)

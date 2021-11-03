@@ -1,0 +1,3 @@
+Front(La6,Lb6)
+!Free(La6)
+Free(Lb6)

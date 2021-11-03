@@ -20,7 +20,7 @@ class social_modelling():
     def read_data(paths, predicate):      # 读txt数据用
         content = []
         base_path = os.getcwd()
-        file = open(base_path + '\\' + paths,'r',encoding = 'utf8')
+        file = open(base_path + '/' + paths,'r',encoding = 'utf8')
         pre_content = file.read()
         pre_content = pre_content.split('###')
         pre_content = [x for x in pre_content if x !='']
@@ -42,7 +42,7 @@ class social_modelling():
         predicate_list = [(x.lower(),x) for x in predicate_list]
         formula = []
         base_path = os.getcwd()
-        file = open(base_path + '\\' + paths,'r',encoding = 'utf8')
+        file = open(base_path + '/' + paths,'r',encoding = 'utf8')
         formula = file.read()
         formula = formula.split('\n')
         formula = [x for x in formula if x !='']
@@ -56,7 +56,7 @@ class social_modelling():
     def read_predicate(paths):
         predicate = []
         base_path = os.getcwd()
-        file = open(base_path + '\\' + paths,'r',encoding = 'utf8')
+        file = open(base_path + '/' + paths,'r',encoding = 'utf8')
         predicate = file.read()
         predicate = predicate.split('\n')
         predicate_list = [x.split('(')[0] for x in predicate]
@@ -77,7 +77,7 @@ class social_modelling():
             mln << i
             print('input formula successful :'+i)
         mln.write()
-        mln.tofile(base_path + '\\'+ mln_path)   #把谓语数据储存成 mln_path.mln 档案
+        mln.tofile(base_path + '/'+ mln_path)   #把谓语数据储存成 mln_path.mln 档案
         db = Database(mln)
         try:
             for i in enumerate(database):
@@ -88,7 +88,7 @@ class social_modelling():
                 db << j[1]
             
         db.write()
-        db.tofile(base_path + '\\'+ db_path)     #把证据数据储存成 db_path.db 档案
+        db.tofile(base_path + '/'+ db_path)     #把证据数据储存成 db_path.db 档案
         return (db,mln)
         
     def activate_model(database, mln):
@@ -132,7 +132,7 @@ class social_modelling():
     def inference(path, result, data, mln):   #推理查询未知的命题
         query_list = []
         base_path = os.getcwd()
-        file = open(base_path + '\\' + path,'r',encoding = 'utf8')
+        file = open(base_path + '/' + path,'r',encoding = 'utf8')
         query_list = file.read()
         query_list = query_list.split('\n')
         query_list = [x for x in query_list if x !='']
@@ -155,8 +155,13 @@ if __name__ == '__main__':
     database = social_modelling.read_data('data.txt', predicate)
     data,mln = social_modelling.model_config(predicate,formula,database,'smoker.mln','smoker.db')
     output = social_modelling.activate_model(data,mln)
-    output.tofile(os.getcwd() + '\\' + 'learnt_mln.mln')
-    social_modelling.inference_str('Smokes(NIXON)' ,output, data, mln)
+    
+    print('-----------------------------------------------------')
+    print(output)
+    print('-----------------------------------------------------')
+    
+    output.tofile(os.getcwd() + '/' + 'learnt.dbpll_cg.student-new-train-student-new-2.mln')
+    social_modelling.inference_str('Safe(LA4)' ,output, data, mln)
             
 #query(queries='Cancer(x)', method='MC-SAT', mln=mln, db=data, verbose=False, multicore=True).run().results
 
