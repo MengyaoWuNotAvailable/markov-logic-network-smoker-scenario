@@ -1,6 +1,14 @@
-Free(x) <=> Safe(x)
-(Free(y)^Front(x,y)) => Safe(x)
-!Free(x) => !Safe(x).
-(!Free(y)^Front(x,y)) => !Safe(x)
-(Front(x,y)^Speedhigh(y)) => Safe(x)
-(Front(x,y)^!Speedhigh(y)) => !Safe(x)
+
+safe(x) => free(x).
+free(x) => safe(x)
+!free(x) => !safe(x).
+!safe(x) => !free(x)
+
+front(x,y)^free(x)^has(y,Free) => safe(x)
+front(x,y)^free(x)^has(y,Speedhigh) => safe(x)
+front(x,y)^has(y,Speedlow) => !safe(x)
+
+
+behind(x,y)^free(x)^has(y,Free) => safe(x)
+behind(x,y)^free(x)^has(y,Speedlow) => safe(x)
+behind(x,y)^has(y,Speedhigh) => !safe(x)

@@ -1,0 +1,11 @@
+front1(T1,Fa1)
+front2(T1,Fb1)
+behind1(T1,Ba1)
+behind2(T1,Bb1)
+free(T1)
+fahas(Fa1,Free)
+fbhas(Fb1,Free)
+bahas(Ba1,Free)
+bbhas(Bb1,Free)
+
+

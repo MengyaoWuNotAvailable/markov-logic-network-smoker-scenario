@@ -137,7 +137,7 @@ class social_modelling():
         query_list = query_list.split('\n')
         query_list = [x for x in query_list if x !='']
         for i in query_list:
-            print(query(queries=i, method='MC-SAT', mln=mln, db=data, verbose=False, multicore=True).run().results)
+            print(query(queries=i, method='EnumerationAsk', mln=mln, db=data, verbose=False, multicore=True).run().results)
           # #Other Methods: EnumerationAsk, MC-SAT, WCSPInference, GibbsSampler
                    
     def inference_str(string, result, data, mln):

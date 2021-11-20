@@ -1,0 +1,32 @@
+leftb(e,lb)^lbhas(lb,Free) => betterlb(lb)
+rightb(e,rb)^rbhas(rb,Free) => betterrb(rb)
+fronta(e,fa)^fahas(fa,Free) => betterfa(fa)
+
+leftb(e,lb) => betterlb(lb)
+fronta(e,fa) => betterfa(fa)
+
+leftb(e,lb)^!lbhas(lb,Free) => !betterlb(lb)
+rightb(e,rb)^!rbhas(rb,Free) => !betterrb(rb)
+fronta(e,fa)^!fahas(fa,Free) => !betterfa(fa)
+
+
+EXIST lc (leftb(e,lb)^frontlb(lb,lc)^lchas(lc,Speedlow)) => !betterlb(lb)
+leftb(e,lb)^behindlb(lb,la)^lahas(la,Speedhigh) => !betterlb(lb)
+
+rightb(e,rb)^frontrb(rb,rc)^rchas(rc,Speedlow) => !betterrb(rb)
+rightb(e,rb)^behindrb(rb,ra)^rahas(ra,Speedhigh) => !betterrb(rb)
+
+fronta(e,fa)^frontfa(fa,fb)^fbhas(fb,Speedlow) => !betterfa(fa)
+
+
+
+
+
+
+
+
+
+
+
+
+

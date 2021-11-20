@@ -124,17 +124,21 @@ def learn_with_config(database,mln):
         
 mln = MLN(grammar='StandardGrammar', logic='FirstOrderLogic')
 
-predicates = read_predicate('predicate.txt')
+predicates = read_predicate('predicate_LRF.txt')
 
 for p in predicates:
     mln << p
+mln << 'speed={Free,Speedhigh,Speedlow}'
+
+#mln << 'p={F1,F2,F3,F4,B1,B2,B3,B4}'
+#mln << 't={T1,T2,T3,T4}'
 
 print('Below are predicates:')
 for p in mln.predicates:
     print(p)
 
 
-formulas = read_formula('formula.txt',predicates)
+formulas = read_formula('formula_LRF.txt',predicates)
 
 print(formulas)
 
@@ -142,7 +146,7 @@ for f in formulas:
     if f.endswith('.'):
         f = f.replace('.','')
         ###CHANGE THIS!!!!!! used for hard constraint
-        mln.formula(f,weight=20.0,fixweight=True)
+        mln.formula(f,weight=100.0,fixweight=True)
     else:
         mln.formula(f,weight=0.0,fixweight=False)
 
@@ -155,7 +159,7 @@ for f in mln.formulas:
 #mln = MLN(mlnfile='learnt.mln',grammar='StandardGrammar', logic='FirstOrderLogic')   
     
 
-db_train = write_db('data.txt')
+db_train = write_db('temp_data.txt')
 db_train.write()
 
     
@@ -165,14 +169,14 @@ learnt_mln.tofile(os.getcwd() + '/' + 'learnt.mln')
 #learnt_mln.write()
 
 
-db_test = write_db('data_test.txt')
-db_test.write()
-
-while True:
-    a = input('Continue for inference: yes or no')
-    if 'yes' in a:
-        break
+infer = '1'
+while infer != '0':
+    infer = input('0 to stop, 1 to continue inference:')
+    if infer == '0':
+        confirm = input('Are you sure to stop infer? Type yes to confirm:')
+        if confirm == 'yes':
+            break
     
-inference_str('Safe(LA6)', mln=learnt_mln, db=db_test)
-# result = MLNQuery(mln=learnt_mln, db=db_test).run()
-# result.write()
+    db_test = write_db('data_LRF_test.txt')
+    db_test.write()
+    inference_str('betterfa(FA1),betterlb(LB1),betterrb(RB1)', mln=learnt_mln, db=db_test)

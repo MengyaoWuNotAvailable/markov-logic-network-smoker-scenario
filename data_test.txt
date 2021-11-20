@@ -1,3 +1,9 @@
-Front(La6,Lb6)
-!Free(La6)
-Free(Lb6)
+front(T1,F1)
+behind(T1,B1)
+free(T1)
+has(F1,Free)
+has(B1,Speedhigh)
+
+
+
+
