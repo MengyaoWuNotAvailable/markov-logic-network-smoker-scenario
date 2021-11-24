@@ -51,7 +51,7 @@ def read_data(paths, predicate=None):      # 读txt数据用
         element = [x.replace(':','_') for x in element if x !='']
         for j in element[1::]:
             splited = j.split('(')
-            content.append((element[0],splited[0]+'('+splited[1].upper()))    
+            content.append((element[0],splited[0]+'('+splited[1]))    
             # pracmln 要求 证据数据库db中的格式為 Predicate(CONTANT_1), 即谓语首字及谓语内
             # 变量contant首字為大写, 还有不可以有空格. 这里单纯方便而把变量大写
             # 另外暂不支持中文输入.        
@@ -179,4 +179,4 @@ while infer != '0':
     
     db_test = write_db('data_LRF_test.txt')
     db_test.write()
-    inference_str('betterfa(FA1),betterlb(LB1),betterrb(RB1)', mln=learnt_mln, db=db_test)
+    inference_str('betterfa(Fa1),betterlb(Lb1),betterrb(Rb1)', mln=learnt_mln, db=db_test)
