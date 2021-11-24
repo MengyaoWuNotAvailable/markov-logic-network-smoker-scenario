@@ -5,7 +5,7 @@ ra  rb  rc
 '''
 import random
 
-numSample = 30
+numSample = 50
 samples = []
 goL = 0
 goR = 0
