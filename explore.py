@@ -236,6 +236,7 @@ env.config["policy_frequency"] = 1
 env.config["duration"] = 100 # default is 40, calculated based on steps (policy decision)
 env.config["vehicles_density"] = 1.2
 env.config["lanes_count"] = 3
+env.config["other_vehicles_type"] = "highway_env.vehicle.behavior.IDMVehicle" #IDMVehicle #AggressiveVehicle #DefensiveVehicle
 
 
 # demo = []
@@ -349,11 +350,11 @@ while True:
     
     samples += collection
     
-    for sample in samples:
-        print(sample)
+    for c in collection:
+        print(c)
     print('\n\n')
 
-    if count >= 100:
+    if count >= 30:
         break
     
 writeAbsEnvToFile(samples)
