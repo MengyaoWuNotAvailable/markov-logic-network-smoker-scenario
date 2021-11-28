@@ -92,10 +92,13 @@ def abstractEnv(obs):
     gridPos = obs[0,:,:]
     gridVx = obs[3,:,:]
 
+    speedThreshold = 0.05
     for pos in absL:
         j = int(pos)-1
         if int(gridPos[3][j]):
-            if gridVx[3][j] <=0:
+            if abs(gridVx[3][j]) <=speedThreshold:
+                absL[pos] = 3 #Speedsame
+            elif gridVx[3][j] < -speedThreshold:
                 absL[pos] = 1 #Speedlow
             else:
                 absL[pos] = 2 #Speedhigh
@@ -105,7 +108,9 @@ def abstractEnv(obs):
     for pos in absF:
         j = int(pos)-1
         if int(gridPos[4][j]):
-            if gridVx[4][j] <=0:
+            if abs(gridVx[4][j]) <=speedThreshold:
+                absF[pos] = 3 #Speedsame
+            elif gridVx[4][j] < -speedThreshold:
                 absF[pos] = 1 #Speedlow
             else:
                 absF[pos] = 2 #Speedhigh
@@ -115,7 +120,9 @@ def abstractEnv(obs):
     for pos in absR:
         j = int(pos)-1
         if int(gridPos[5][j]):
-            if gridVx[5][j] <=0:
+            if abs(gridVx[5][j]) <=speedThreshold:
+                absR[pos] = 3 #Speedsame
+            elif gridVx[5][j] < -speedThreshold:
                 absR[pos] = 1 #Speedlow
             else:
                 absR[pos] = 2 #Speedhigh
@@ -152,6 +159,8 @@ def writeAbsEnvToFile(collection):
             FOL_str.append('lchas(Lc{},Free)'.format(index))
         elif dic[lc] == 1:
             FOL_str.append('lchas(Lc{},Speedlow)'.format(index))
+        elif dic[lc] == 3:
+            FOL_str.append('lchas(Lc{},Speedsame)'.format(index))
         else:
             FOL_str.append('lchas(Lc{},Speedhigh)'.format(index))
             
@@ -159,6 +168,8 @@ def writeAbsEnvToFile(collection):
             FOL_str.append('lbhas(Lb{},Free)'.format(index))
         elif dic[lb] == 1:
             FOL_str.append('lbhas(Lb{},Speedlow)'.format(index))
+        elif dic[lb] == 3:
+            FOL_str.append('lbhas(Lb{},Speedsame)'.format(index))
         else:
             FOL_str.append('lbhas(Lb{},Speedhigh)'.format(index))
             
@@ -166,6 +177,8 @@ def writeAbsEnvToFile(collection):
             FOL_str.append('lahas(La{},Free)'.format(index))
         elif dic[la] == 1:
             FOL_str.append('lahas(La{},Speedlow)'.format(index))
+        elif dic[la] == 3:
+            FOL_str.append('lahas(La{},Speedsame)'.format(index))
         else:
             FOL_str.append('lahas(La{},Speedhigh)'.format(index))
 
@@ -173,6 +186,8 @@ def writeAbsEnvToFile(collection):
             FOL_str.append('thas(T{},Free)'.format(index))
         elif dic[t] == 1:
             FOL_str.append('thas(T{},Speedlow)'.format(index))
+        elif dic[t] == 3:
+            FOL_str.append('thas(T{},Speedsame)'.format(index))
         else:
             FOL_str.append('thas(T{},Speedhigh)'.format(index))      
     #####
@@ -180,6 +195,8 @@ def writeAbsEnvToFile(collection):
             FOL_str.append('fchas(Fc{},Free)'.format(index))
         elif dic[fc] == 1:
             FOL_str.append('fchas(Fc{},Speedlow)'.format(index))
+        elif dic[fc] == 3:
+            FOL_str.append('fchas(Fc{},Speedsame)'.format(index))
         else:
             FOL_str.append('fchas(Fc{},Speedhigh)'.format(index))
             
@@ -187,6 +204,8 @@ def writeAbsEnvToFile(collection):
             FOL_str.append('fbhas(Fb{},Free)'.format(index))
         elif dic[fb] == 1:
             FOL_str.append('fbhas(Fb{},Speedlow)'.format(index))
+        elif dic[fb] == 3:
+            FOL_str.append('fbhas(Fb{},Speedsame)'.format(index))
         else:
             FOL_str.append('fbhas(Fb{},Speedhigh)'.format(index))
             
@@ -194,6 +213,8 @@ def writeAbsEnvToFile(collection):
             FOL_str.append('fahas(Fa{},Free)'.format(index))
         elif dic[fa] == 1:
             FOL_str.append('fahas(Fa{},Speedlow)'.format(index))
+        elif dic[fa] == 3:
+            FOL_str.append('fahas(Fa{},Speedsame)'.format(index))
         else:
             FOL_str.append('fahas(Fa{},Speedhigh)'.format(index))   
     
@@ -234,7 +255,7 @@ env.config["observation"] = {
 env.config["simulation_frequency"] = 20
 env.config["policy_frequency"] = 1
 env.config["duration"] = 100 # default is 40, calculated based on steps (policy decision)
-env.config["vehicles_density"] = 1.2
+env.config["vehicles_density"] = 1.5
 env.config["lanes_count"] = 3
 env.config["other_vehicles_type"] = "highway_env.vehicle.behavior.IDMVehicle" #IDMVehicle #AggressiveVehicle #DefensiveVehicle
 
@@ -265,19 +286,16 @@ env.config["other_vehicles_type"] = "highway_env.vehicle.behavior.IDMVehicle" #I
 # env.configure({
     # "manual_control": True
 # })
-#absF = {'2':0, '3':0, '4':0, '5':0, '6':0, '7':0, '8':0}
+
 def considerLaneChange(absF,speed):
 
-    if (absF['6'] != 0) or (absF['7'] == 1): # if speedlow
+    if (absF['6'] != 0) or (absF['7'] == 1) or (absF['7'] == 3): # if speedlow
         action = SLOWER
     elif absF['8'] == 1 or (absF['7'] == 2):
         action = IDLE
     else:
         action = FASTER
-    
-    print(absF)
-    print(action)
-    
+
     if (action == IDLE):
         print('Consider lane change\n')
         return True, None
@@ -319,17 +337,19 @@ while True:
         
         if info['action'] == LANE_LEFT:
         
-            stateActionResult.append(absL)
+            stateActionResult.append(absL.copy())
             
             if info['crashed']:
                 stateActionResult.append(False)#not safe
             else:
                 stateActionResult.append(True)
+                
             collection.append(stateActionResult)
+            print(stateActionResult)
                 
         elif info['action'] == LANE_RIGHT:
         
-            stateActionResult.append(absR)
+            stateActionResult.append(absR.copy())
             
             if info['crashed']:
                 stateActionResult.append(False)#not safe
@@ -337,9 +357,10 @@ while True:
                 stateActionResult.append(True)
             
             collection.append(stateActionResult)
+            print(stateActionResult)
         
         #print(info)
-        print(stateActionResult)
+        #print(stateActionResult)
         # if laneChange:
             # input('a:')
         # if info['crashed']:
@@ -349,13 +370,11 @@ while True:
     
     
     samples += collection
-    
-    for c in collection:
-        print(c)
-    print('\n\n')
 
-    if count >= 30:
+    if count >= 100:
         break
-    
+print('\n\n')
+for s in samples:
+    print(s)
 writeAbsEnvToFile(samples)
     
